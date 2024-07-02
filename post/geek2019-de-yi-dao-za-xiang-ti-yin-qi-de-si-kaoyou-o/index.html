@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>由ogeek2019的一道杂项题引起的思考 | 夏风</title>
+<meta name="description" content="随夏夜入梦，枕清风出尘">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="https://xiafeng2333.github.io/favicon.ico?v=1719916328213">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://xiafeng2333.github.io/styles/main.css">
+
+
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+  </head>
+  <body>
+  
+    <nav class="navbar border fixed split-nav">
+  <div class="nav-brand">
+    <h3><a href="https://xiafeng2333.github.io">夏风</a></h3>
+  </div>
+  <div class="collapsible">
+    <input id="collapsible1" type="checkbox" name="collapsible1">
+    <button>
+      <label for="collapsible1">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </label>
+    </button>
+    <div class="collapsible-body">
+      <ul class="inline">
+        
+          <li>
+            
+              <a href="/" class="menu">
+                首页
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/archives" class="menu">
+                归档
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/tags" class="menu">
+                标签
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/post/about" class="menu">
+                关于
+              </a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div id="top" class="row site">
+      <div class="sm-12 md-8 col">
+        <div class="paper">
+          <article class="article">
+            <h1>由ogeek2019的一道杂项题引起的思考</h1>
+            <p class="article-meta">
+              2019-08-31
+              
+                <a href="https://xiafeng2333.github.io/tag/lP8NADwws/" class="badge success">
+                  CTF
+                </a>
+              
+            </p>
+            
+              <img src="https://xiafeng2333.github.io/post-images/geek2019-de-yi-dao-za-xiang-ti-yin-qi-de-si-kaoyou-o.jpg" alt="由ogeek2019的一道杂项题引起的思考">
+            
+            <div class="post-content" v-pre>
+              <h1 id="由ogeek2019的一道杂项题引起的思考">由ogeek2019的一道杂项题引起的思考</h1>
+<h3 id="引言2019wp">引言——2019wp</h3>
+<p>开局一张图，直接上stegslove，很明显，多个色道左上角有像素点，熟悉的就知道有lsb隐写</p>
+<figure data-type="image" tabindex="1"><img src="https://xiafeng2333.github.io/post-images/1719915391111.jpg" alt="" loading="lazy"></figure>
+<p>也可使用超好用的<strong>lsb分析工具</strong><code>zsteg</code></p>
+<p>安装命令</p>
+<pre><code class="language-bash">gem install zsteg
+</code></pre>
+<p>使用命令，eg：</p>
+<pre><code class="language-bash">zsteg 2019.png
+</code></pre>
+<p>得到信息，看起来是base64</p>
+<figure data-type="image" tabindex="2"><img src="https://xiafeng2333.github.io/post-images/1719915410467.jpg" alt="" loading="lazy"></figure>
+<p>解码<code>（QW8obWdIW11XTyxyOFVTM0dNMlIySSVZQjdzdA==</code></p>
+<blockquote>
+<p>base64应该没有<code>(</code>，不知这道题的括号是什么意思</p>
+</blockquote>
+<p>解出来得到字符串<code>Ao(mgH[]WO,r8US3GM2R2I%YB7st</code></p>
+<p>重点来了，当时是不知道这是什么加密，所以在收藏的一个网站里尝试</p>
+<pre><code class="language-html">http://ctf.ssleye.com
+</code></pre>
+<p>但是有个问题就是部分编码解码是要收费的，后面听别人说这是国内最大的CTF编码平台，好用还是好用。后来发现这个编码是<code>base85</code></p>
+<p>解出来<code>flag{~h!%3W-9jKB6\(fG}</code></p>
+<figure data-type="image" tabindex="3"><img src="https://xiafeng2333.github.io/post-images/1719915418088.jpg" alt="" loading="lazy"></figure>
+<p>这是个啥玩意呢，没遇到过的人很难知道。</p>
+<p>所以本文就是在此对base家族进行一个总结</p>
+<h3 id="正文">正文</h3>
+<p>以下除注明，所有编码实例均使用</p>
+<pre><code class="language-bash">flag{hello_worl_2333!}
+</code></pre>
+<p>进行演示</p>
+<h4 id="常见的base家族">常见的base家族</h4>
+<p>最标准的三个就是base64、32、16，也是最常见的</p>
+<h5 id="base64编码">Base64编码</h5>
+<p>Base64编码使用了ASCII编码中<strong>64</strong>个可打印的字符**(大写字母A-Z,小写字母a-z,数字0~9以及+,/)**将任意字节数据进行编码.Base64编码将串起来的二进制以6位进行分割.所以分切之前的二进制位数应该是24的倍数(即6,8的最小公倍数).如果不足24位,则在编码后数据后面添加<code>=</code>,一个<code>=</code>相当于6个二进制位.数据量是原先的三分之四倍。</p>
+<pre><code class="language-bash">#编码后字符串
+ZmxhZ3toZWxsb193b3JsXzIzMzMhfQ==
+</code></pre>
+<h5 id="base32编码">Base32编码</h5>
+<p>Base32使用了ASCII编码中可打印的<strong>32</strong>个字符**(大写字母A-Z和数字2~7)**对任意字节数据进行编码.Base32将串起来的二进制数据按照5个二进制位分为一组,由于传输数据的单位是字节(即8个二进制位).所以分割之前的二进制位数是40的倍数(40是5和8的最小公倍数).如果不足40位,则在编码后数据补充<code>=</code>,一个<code>=</code>相当于一个组(5个二进制位),编码后的数据是原先的五分之八倍。末尾最多有6个<code>=</code></p>
+<pre><code class="language-bash">#编码后字符串
+MZWGCZ33NBSWY3DPL53W64TML4ZDGMZTEF6Q====
+</code></pre>
+<pre><code class="language-bash">#在线解码网站
+http://ctf.ssleye.com/base64.html
+</code></pre>
+<h5 id="base16编码">Base16编码</h5>
+<p>Base16编码就是将ASCII字符集中可打印的字符**(数字0-9和字母A-F)**对应的二进制字节数据进行编码，不会出现<code>=</code>，数据量是原先的两倍。</p>
+<pre><code class="language-bash">#编码后字符串
+666C61677B68656C6C6F5F776F726C5F32333333217D
+#在线解码网站
+http://ctf.ssleye.com/base64.html
+</code></pre>
+<h4 id="奇奇怪怪的base">奇奇怪怪的base</h4>
+<p>顺序从小到大</p>
+<h5 id="base36编码">base36编码</h5>
+<p>Base36包含0~9的数字，加上所有26个字母，不区分大小写，不包含任何标点，所有的字母要不全大写，要不全小写。所以加起来就是 “0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;,或者”0123456789abcdefghijklmnopqrstuvwxyz“</p>
+<p><strong>特征特点</strong>：密文由36个字符（0-9,a-z）组成，加密仅支持整数数字，解密仅支持字符串，不支持中文<br>
+密文由36个字符（0-9,A-Z）</p>
+<pre><code class="language-bash">#编码前字符串（因为base36仅支持数字进行编码）
+2333123456578
+#编码后字符串
+trtlgsoy
+#在线解码网站
+ http://ctf.ssleye.com/base36w.html（收费）
+</code></pre>
+<h5 id="base58编码">base58编码</h5>
+<p>base58采用的字符集为“123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ”，从这不难看出，Base58是纯数字与字母组成而且去掉了容易引起视觉混淆的字符（0：数字零，O：大写O，I：大写i，l:小写L）。9个数字+49个字母=58个。由于没有特殊字符所以在采用鼠标双击或移动设备选择时可以自动识别全选。Base58本身就是URLSafe。Base64的URFSafe模式虽然已经对URL支持的比较好，但UUID中还是包含“-或_”。目前流行的比特币，采用的就是Base58Check编码，是在Base58基础上又增加了安全效验机制。</p>
+<p><strong>特征特点</strong>：<br>
+Base58是用于Bitcoin中使用的一种独特的编码方式，主要用于产生Bitcoin的钱包地址，Base58不使用数字”0”，字母大写”O”，字母大写”I”，和字母小写”l”，以及”+”和”/”符号</p>
+<pre><code class="language-bash">#编码后字符串
+UoLFswHcCx17iFnZbLC2YCVEwnL5vc
+#在线解码网站
+https://www.jisuan.mobi/pbHzbBHbzHB6uSJx.html
+</code></pre>
+<h5 id="base62编码">base62编码</h5>
+<p>同样的还有 base62编码，就是26个字母的大小写再加上0-9，一共62个字符。</p>
+<p>相比于base64只是去掉了两个在网络上不便传输的符号</p>
+<p><strong>特征特点</strong>：密文由62字符（0-9，a-z，A-Z）组成</p>
+<pre><code class="language-bash">#编码后字符串
+419eruT2yBOTbPTTZpgI3ulf9i08Sr
+#在线解码网站 
+https://base62.io/（支持中文） 
+http://decode-base62.nichabi.com 
+http://ctf.ssleye.com/base62.html（仅支持数字、收费）
+</code></pre>
+<h5 id="base85编码">base85编码</h5>
+<p><strong>特征特点</strong>：</p>
+<pre><code class="language-bash">#编码后字符串
+Ao(mgHY?u,Ci&lt;[)DfTZ$1,C^B+aj
+#在线解密网站
+https://base85.io/
+</code></pre>
+<h5 id="base91编码">base91编码</h5>
+<p><strong>特征特点</strong>：密文由91个字符（0-9，a-z，A-Z,!#$%&amp;()*+,./:;&lt;=&gt;?@[]^_`{|}~”）组成</p>
+<pre><code class="language-bash">#编码后字符串
+@iH&lt;,{meFT$&amp;|]RnBjk1AkAS=y!
+#在线解码网站 
+https://www.dcode.fr/base-91-encoding
+http://ctf.ssleye.com/base91.html（收费）
+</code></pre>
+<h5 id="base92编码">base92编码</h5>
+<p><strong>特征特点</strong>：穷，开不起会员测试了，暂缺，遇到了自己试试</p>
+<pre><code class="language-bash">#在线解码网站 
+http://ctf.ssleye.com/base92.html（收费）
+</code></pre>
+<hr>
+<p>其实大部分应该都是能在python库里找到现成的，不需要在线解密</p>
+<p>eg：</p>
+<pre><code class="language-python">&gt;&gt;&gt; import base92
+&gt;&gt;&gt; base92.decode（base92.encode（'hello world'））
+'你好，世界'
+&gt;&gt;&gt; base92.encode（'\ x61 \ xf2 \ x05 \ x99 \ x42'）
+'DJ8gER！'
+</code></pre>
+
+            </div>
+          </article>
+        </div>
+        <div class="paper" data-aos="fade-in">
+          
+            <div class="next-post">
+              <div class="next">
+                下一篇
+              </div>
+              <a href="https://xiafeng2333.github.io/post/hello-gridea/">
+                <h3 class="post-title">
+                  Hello Gridea
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+        
+      </div>
+
+      <div class="sm-12 md-4 col sidebar">
+  <div class="paper info-container">
+    <img src="https://xiafeng2333.github.io/images/avatar.png?v=1719916328213" class="no-responsive avatar">
+    <div class="text-muted">随夏夜入梦，枕清风出尘</div>
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      最新文章
+    </div>
+    <div class="row">
+      <ul>
+        
+          
+            <li>
+              <a href="https://xiafeng2333.github.io/post/shi-qu-liao-hao-duo-dan-shi-du-hui-lai-li/">失去了好多，但是都回来哩</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://xiafeng2333.github.io/post/geek2019-de-yi-dao-za-xiang-ti-yin-qi-de-si-kaoyou-o/">由ogeek2019的一道杂项题引起的思考</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://xiafeng2333.github.io/post/about/">关于</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://xiafeng2333.github.io/post/hello-gridea/">Hello Gridea</a>
+            </li>
+          
+        
+      </ul>
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      标签列表
+    </div>
+    <div class="row">
+      
+        <a href="https://xiafeng2333.github.io/tag/essay_/" class="badge secondary">
+          随笔
+        </a>
+      
+        <a href="https://xiafeng2333.github.io/tag/lP8NADwws/" class="badge warning">
+          CTF
+        </a>
+      
+        <a href="https://xiafeng2333.github.io/tag/jCRGUXeyj/" class="badge ">
+          Gridea
+        </a>
+      
+    </div>
+  </div>
+  <div class="paper">
+    Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://xiafeng2333.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+
+
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+</script>
+
+
+
+
+  </body>
+</html>

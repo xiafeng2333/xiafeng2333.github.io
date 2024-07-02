@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://xiafeng2333.github.io</id>
+    <title>夏风</title>
+    <updated>2024-07-02T10:32:12.904Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://xiafeng2333.github.io"/>
+    <link rel="self" href="https://xiafeng2333.github.io/atom.xml"/>
+    <subtitle>随夏夜入梦，枕清风出尘</subtitle>
+    <logo>https://xiafeng2333.github.io/images/avatar.png</logo>
+    <icon>https://xiafeng2333.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2024, 夏风</rights>
+    <entry>
+        <title type="html"><![CDATA[失去了好多，但是都回来哩]]></title>
+        <id>https://xiafeng2333.github.io/post/shi-qu-liao-hao-duo-dan-shi-du-hui-lai-li/</id>
+        <link href="https://xiafeng2333.github.io/post/shi-qu-liao-hao-duo-dan-shi-du-hui-lai-li/">
+        </link>
+        <updated>2024-07-02T10:25:22.000Z</updated>
+        <content type="html"><![CDATA[<p>看能不能慢慢把原来的文章填回来<br>
+<img src="https://xiafeng2333.github.io/post-images/1719916040873.jpg" alt="" loading="lazy"><br>
+一晃这么多年了<br>
+<img src="https://xiafeng2333.github.io/post-images/1719916108860.jpg" alt="" loading="lazy"></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[由ogeek2019的一道杂项题引起的思考]]></title>
+        <id>https://xiafeng2333.github.io/post/geek2019-de-yi-dao-za-xiang-ti-yin-qi-de-si-kaoyou-o/</id>
+        <link href="https://xiafeng2333.github.io/post/geek2019-de-yi-dao-za-xiang-ti-yin-qi-de-si-kaoyou-o/">
+        </link>
+        <updated>2019-08-31T10:15:11.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="由ogeek2019的一道杂项题引起的思考">由ogeek2019的一道杂项题引起的思考</h1>
+<h3 id="引言2019wp">引言——2019wp</h3>
+<p>开局一张图，直接上stegslove，很明显，多个色道左上角有像素点，熟悉的就知道有lsb隐写</p>
+<figure data-type="image" tabindex="1"><img src="https://xiafeng2333.github.io/post-images/1719915391111.jpg" alt="" loading="lazy"></figure>
+<p>也可使用超好用的<strong>lsb分析工具</strong><code>zsteg</code></p>
+<p>安装命令</p>
+<pre><code class="language-bash">gem install zsteg
+</code></pre>
+<p>使用命令，eg：</p>
+<pre><code class="language-bash">zsteg 2019.png
+</code></pre>
+<p>得到信息，看起来是base64</p>
+<figure data-type="image" tabindex="2"><img src="https://xiafeng2333.github.io/post-images/1719915410467.jpg" alt="" loading="lazy"></figure>
+<p>解码<code>（QW8obWdIW11XTyxyOFVTM0dNMlIySSVZQjdzdA==</code></p>
+<blockquote>
+<p>base64应该没有<code>(</code>，不知这道题的括号是什么意思</p>
+</blockquote>
+<p>解出来得到字符串<code>Ao(mgH[]WO,r8US3GM2R2I%YB7st</code></p>
+<p>重点来了，当时是不知道这是什么加密，所以在收藏的一个网站里尝试</p>
+<pre><code class="language-html">http://ctf.ssleye.com
+</code></pre>
+<p>但是有个问题就是部分编码解码是要收费的，后面听别人说这是国内最大的CTF编码平台，好用还是好用。后来发现这个编码是<code>base85</code></p>
+<p>解出来<code>flag{~h!%3W-9jKB6\(fG}</code></p>
+<figure data-type="image" tabindex="3"><img src="https://xiafeng2333.github.io/post-images/1719915418088.jpg" alt="" loading="lazy"></figure>
+<p>这是个啥玩意呢，没遇到过的人很难知道。</p>
+<p>所以本文就是在此对base家族进行一个总结</p>
+<h3 id="正文">正文</h3>
+<p>以下除注明，所有编码实例均使用</p>
+<pre><code class="language-bash">flag{hello_worl_2333!}
+</code></pre>
+<p>进行演示</p>
+<h4 id="常见的base家族">常见的base家族</h4>
+<p>最标准的三个就是base64、32、16，也是最常见的</p>
+<h5 id="base64编码">Base64编码</h5>
+<p>Base64编码使用了ASCII编码中<strong>64</strong>个可打印的字符**(大写字母A-Z,小写字母a-z,数字0~9以及+,/)**将任意字节数据进行编码.Base64编码将串起来的二进制以6位进行分割.所以分切之前的二进制位数应该是24的倍数(即6,8的最小公倍数).如果不足24位,则在编码后数据后面添加<code>=</code>,一个<code>=</code>相当于6个二进制位.数据量是原先的三分之四倍。</p>
+<pre><code class="language-bash">#编码后字符串
+ZmxhZ3toZWxsb193b3JsXzIzMzMhfQ==
+</code></pre>
+<h5 id="base32编码">Base32编码</h5>
+<p>Base32使用了ASCII编码中可打印的<strong>32</strong>个字符**(大写字母A-Z和数字2~7)**对任意字节数据进行编码.Base32将串起来的二进制数据按照5个二进制位分为一组,由于传输数据的单位是字节(即8个二进制位).所以分割之前的二进制位数是40的倍数(40是5和8的最小公倍数).如果不足40位,则在编码后数据补充<code>=</code>,一个<code>=</code>相当于一个组(5个二进制位),编码后的数据是原先的五分之八倍。末尾最多有6个<code>=</code></p>
+<pre><code class="language-bash">#编码后字符串
+MZWGCZ33NBSWY3DPL53W64TML4ZDGMZTEF6Q====
+</code></pre>
+<pre><code class="language-bash">#在线解码网站
+http://ctf.ssleye.com/base64.html
+</code></pre>
+<h5 id="base16编码">Base16编码</h5>
+<p>Base16编码就是将ASCII字符集中可打印的字符**(数字0-9和字母A-F)**对应的二进制字节数据进行编码，不会出现<code>=</code>，数据量是原先的两倍。</p>
+<pre><code class="language-bash">#编码后字符串
+666C61677B68656C6C6F5F776F726C5F32333333217D
+#在线解码网站
+http://ctf.ssleye.com/base64.html
+</code></pre>
+<h4 id="奇奇怪怪的base">奇奇怪怪的base</h4>
+<p>顺序从小到大</p>
+<h5 id="base36编码">base36编码</h5>
+<p>Base36包含0~9的数字，加上所有26个字母，不区分大小写，不包含任何标点，所有的字母要不全大写，要不全小写。所以加起来就是 “0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;,或者”0123456789abcdefghijklmnopqrstuvwxyz“</p>
+<p><strong>特征特点</strong>：密文由36个字符（0-9,a-z）组成，加密仅支持整数数字，解密仅支持字符串，不支持中文<br>
+密文由36个字符（0-9,A-Z）</p>
+<pre><code class="language-bash">#编码前字符串（因为base36仅支持数字进行编码）
+2333123456578
+#编码后字符串
+trtlgsoy
+#在线解码网站
+ http://ctf.ssleye.com/base36w.html（收费）
+</code></pre>
+<h5 id="base58编码">base58编码</h5>
+<p>base58采用的字符集为“123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ”，从这不难看出，Base58是纯数字与字母组成而且去掉了容易引起视觉混淆的字符（0：数字零，O：大写O，I：大写i，l:小写L）。9个数字+49个字母=58个。由于没有特殊字符所以在采用鼠标双击或移动设备选择时可以自动识别全选。Base58本身就是URLSafe。Base64的URFSafe模式虽然已经对URL支持的比较好，但UUID中还是包含“-或_”。目前流行的比特币，采用的就是Base58Check编码，是在Base58基础上又增加了安全效验机制。</p>
+<p><strong>特征特点</strong>：<br>
+Base58是用于Bitcoin中使用的一种独特的编码方式，主要用于产生Bitcoin的钱包地址，Base58不使用数字”0”，字母大写”O”，字母大写”I”，和字母小写”l”，以及”+”和”/”符号</p>
+<pre><code class="language-bash">#编码后字符串
+UoLFswHcCx17iFnZbLC2YCVEwnL5vc
+#在线解码网站
+https://www.jisuan.mobi/pbHzbBHbzHB6uSJx.html
+</code></pre>
+<h5 id="base62编码">base62编码</h5>
+<p>同样的还有 base62编码，就是26个字母的大小写再加上0-9，一共62个字符。</p>
+<p>相比于base64只是去掉了两个在网络上不便传输的符号</p>
+<p><strong>特征特点</strong>：密文由62字符（0-9，a-z，A-Z）组成</p>
+<pre><code class="language-bash">#编码后字符串
+419eruT2yBOTbPTTZpgI3ulf9i08Sr
+#在线解码网站 
+https://base62.io/（支持中文） 
+http://decode-base62.nichabi.com 
+http://ctf.ssleye.com/base62.html（仅支持数字、收费）
+</code></pre>
+<h5 id="base85编码">base85编码</h5>
+<p><strong>特征特点</strong>：</p>
+<pre><code class="language-bash">#编码后字符串
+Ao(mgHY?u,Ci&lt;[)DfTZ$1,C^B+aj
+#在线解密网站
+https://base85.io/
+</code></pre>
+<h5 id="base91编码">base91编码</h5>
+<p><strong>特征特点</strong>：密文由91个字符（0-9，a-z，A-Z,!#$%&amp;()*+,./:;&lt;=&gt;?@[]^_`{|}~”）组成</p>
+<pre><code class="language-bash">#编码后字符串
+@iH&lt;,{meFT$&amp;|]RnBjk1AkAS=y!
+#在线解码网站 
+https://www.dcode.fr/base-91-encoding
+http://ctf.ssleye.com/base91.html（收费）
+</code></pre>
+<h5 id="base92编码">base92编码</h5>
+<p><strong>特征特点</strong>：穷，开不起会员测试了，暂缺，遇到了自己试试</p>
+<pre><code class="language-bash">#在线解码网站 
+http://ctf.ssleye.com/base92.html（收费）
+</code></pre>
+<hr>
+<p>其实大部分应该都是能在python库里找到现成的，不需要在线解密</p>
+<p>eg：</p>
+<pre><code class="language-python">&gt;&gt;&gt; import base92
+&gt;&gt;&gt; base92.decode（base92.encode（'hello world'））
+'你好，世界'
+&gt;&gt;&gt; base92.encode（'\ x61 \ xf2 \ x05 \ x99 \ x42'）
+'DJ8gER！'
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Hello Gridea]]></title>
+        <id>https://xiafeng2333.github.io/post/hello-gridea/</id>
+        <link href="https://xiafeng2333.github.io/post/hello-gridea/">
+        </link>
+        <updated>2018-12-11T16:00:00.000Z</updated>
+        <summary type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
+✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
+✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
+<!-- more -->
+<p><a href="https://github.com/getgridea/gridea">Github</a><br>
+<a href="https://gridea.dev/">Gridea 主页</a><br>
+<a href="https://fehey.com/">示例网站</a></p>
+<h2 id="特性">特性👇</h2>
+<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
+<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
+<p>🏷️  你可以对文章进行标签分组</p>
+<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
+<p>💻  你可以在 <strong>Windows</strong>，<strong>MacOS</strong> 或 <strong>Linux</strong> 设备上使用此客户端</p>
+<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
+<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
+<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
+<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
+<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
+<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前 🏃</p>
+<p>未来，它一定会成为你离不开的伙伴</p>
+<p>尽情发挥你的才华吧！</p>
+<p>😘 Enjoy~</p>
+]]></content>
+    </entry>
+</feed>
